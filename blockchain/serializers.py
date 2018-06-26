@@ -4,18 +4,48 @@ from blockchain import models
 class AddressAPISerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Address 
-        fields = ('address', 'balance')
+        fields = ('address', )
+
+class SubAddressAPISerializer(serializers.ModelSerializer):
+    def to_representation(self, value):
+        return value.address
+
+    class Meta:
+        model = models.Address
+        fields = ('address', )
 
 class TransactionAPISerializer(serializers.ModelSerializer):
-    sender = AddressAPISerializer(many=False)
-    reciever = AddressAPISerializer(many=False)
+    sender = SubAddressAPISerializer(many=False)
+    reciever = SubAddressAPISerializer(many=False)
     
     class Meta:
         model = models.TransactionDB
         fields = '__all__'
 
+
+class SubGetBlockAPISerializer(serializers.ModelSerializer):
+    '''Recursive serializer used to get previous_hash'''
+
+    def to_representation(self, value):
+        # value is BlockStructureDB
+        # return only it's block_hash
+        return value.block_hash
+
+    class Meta:
+        model = models.BlockStructureDB
+        fields = ('block_hash',)
+
+
 class GetBlockAPISerializer(serializers.ModelSerializer):
     transactions = TransactionAPISerializer(many=True, source='get_block')
+    previous_hash = SubGetBlockAPISerializer(many=False)
+    
+    # Debug
+    #def get_fields(self):
+    #    fields = super(GetBlockAPISerializer, self).get_fields()
+    #    print(dir(fields['previous_hash']))
+    #    print(fields['previous_hash'].__dict__)
+    #    return fields
 
     class Meta:
         model = models.BlockStructureDB

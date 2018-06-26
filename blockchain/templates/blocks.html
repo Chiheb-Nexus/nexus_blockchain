@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Block informations
+{% endblock %}
+
+{% block content %}
+
+<div id='app'>
+    <div v-if="status_code == 200">
+        <div class="container">
+                <h2><b>Block #[[ results['height'] ]]</b> </h2>
+                <p>Block informations:</p>            
+                <table class="table table-hover">
+                  <thead>
+                    <tr class="table-primary">
+                      <th>Summary</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td>height</td>
+                        <td>[[ results['height'] ]]</td>
+                    </tr>
+                    <tr>
+                        <td>Hash</td>
+                        <td>[[ results['block_hash'] ]]</td>
+                    </tr>
+                    <tr>
+                        <td>Previous hash</td>
+                        <td v-if="results['previous_hash']">
+                          <a v-bind:href="/block-info/ + [[ results['previous_hash'] ]]">
+                            [[ results['previous_hash'] ]]
+                          </a>
+                        </td>
+                        <td v-else>
+                            <a href='/block-info/0'>
+                                0000000000000000000000000000000000000000000000000000000000000000
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Timestamp</td>
+                        <td>[[ results['timestamp'] ]] ([[ results['timestamp'] | format_date ]])</td>
+                    </tr>
+                    <tr>
+                        <td>Data</td>
+                        <td>[[ results['data'] ]]</td>
+                    </tr>
+                    <tr>
+                        <td>Merkle root</td>
+                        <td>[[ results['merkle'] ]]</td>
+                    </tr>
+   
+                  </tbody>
+                </table>
+        </div>
+        <div v-show="results['transactions'].length != 0" class="container">
+                <h2><b>Transactions</b> </h2>
+                    <div v-for="tx in results['transactions']">
+                        <table class="table table-hover">
+                            <!--<thead>-->
+                                <tr class="table-primary">
+                                    <th colspan="3" align="left">
+                                        [[ tx['tx_hash'] ]]
+                                    </th>
+                                    <th>
+                                        [[ tx['timestamp'] | format_date2 ]]
+                                    </th>
+                                </tr>
+                        </table>
+                        <table class="table table-hover">
+                                <tr>
+                                        <td colspan="3" align="left">
+                                        [[ tx['sender'] ]] 
+                                        <p>
+                                            <div class="alert alert-info" role="alert">
+                                                Data: [[ tx['data'] ]]
+                                            </div>
+                                        </p>
+                                        </td>
+                                    <td align="center">
+                                        <img src="{% static 'img/arrow_right_green.png' %}">
+                                    </td>
+                                    <td align="right">
+                                        [[ tx['reciever'] ]]
+                                        <p>
+                                            <div>
+                                            <button type="button" class="btn btn-success">NexusCoin 
+                                                <span class="badge badge-secondary">[[ tx['amount'] ]]</span>
+                                            </button>
+                                            </div>
+                                        </p>
+                                    </td>
+                                    </tr>
+                        </table>
+                </div>
+        </div>
+</div>
+<div v-else>
+    Error [[ status_code ]]
+</div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<script>
+    var url = "{{ block_var }}";
+    var app = new Vue({
+        
+        delimiters : ['[[', ']]'],
+        el: '#app',
+        data: {
+            results: '',
+            msg:'',
+            status_code: '',
+            value: ''
+        },
+        filters: {
+            format_date: function(value){
+                if(value){
+                    var date = moment.unix(value).format('YYYY/MM/DD HH:mm:SS ZUTC');
+                    return date
+                }
+            },
+            format_date2: function(value){
+                if(value){
+                    var date = moment.unix(value).format('YYYY/MM/DD HH:mm:SS');
+                    return date
+                }
+            }
+
+        },
+        methods: {
+            fetch_data: function(){
+                axios.get(url).then(
+                       response => (
+                        this.results = response.data['data'],
+                        this.msg = response.data['msg'],
+                        this.status_code = response.data['status']
+                       )
+                ).catch(function(error){
+                    console.log(error);
+                })
+            }
+        },
+        beforeMount(){
+            this.fetch_data()
+        }
+    })
+</script>
+{% endblock %}

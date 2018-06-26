@@ -91,26 +91,24 @@ class GenesisBlockAPI(viewsets.ViewSet):
 
 class GetBlockAPI(viewsets.ViewSet):
         
-    def list(self, request, height, *args, **kwargs):
-        if not height:
-            return Response({
-                'msg': 'Please provide a valid Block ID', 
-                'status': status.HTTP_404_NOT_FOUND
-            })
-        try:
-            block_height = int(height)
-        except ValueError:
-            return Response({
-                'msg': 'Please enter a valid block height', 
-                'status': status.HTTP_400_BAD_REQUEST
-            })
-        except TypeError:
-            return Response({
-                'msg': 'Please enter a block height number',
-                'status': stauts.HTTP_403_FORBIDDEN
-            })
+    def list(self, request, *args, **kwargs):
+        height = self.kwargs.get('height')
+        query = None
 
-        query = models.BlockStructureDB.objects.filter(height=block_height).first()
+        if height and all(k.isdigit() == True for k in height):
+            block_height = int(height)
+            query = models.BlockStructureDB.objects.filter(
+                height=block_height
+            ).first()
+        elif height.isalnum():
+            query = models.BlockStructureDB.objects.filter(
+                block_hash = height
+            ).first()
+        else:
+            return Response({
+                'status': status.HTTP_400_BAD_REQUEST,
+                'msg': 'Invalid block number or hash'
+            })
         if not query:
             return Response({
                 'msg': 'Not found',
