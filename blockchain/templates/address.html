@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Block informations
+    Address informations
 {% endblock %}
 
 {% block content %}
@@ -10,50 +10,28 @@
 <div id='app'>
     <div v-if="status_code == 200">
         <div class="container">
-                <h2><b>Block #[[ results['height'] ]]</b> </h2>
-                <p>Block informations:</p>            
+                <h2><b>Address: [[ results['address'] ]]</b> </h2>
+                <p>Address informations:</p>            
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-primary">
                       <th>Summary</th>
-                      <th></th>
+                      <th></qrcode></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                        <td>height</td>
-                        <td>[[ results['height'] ]]</td>
+                        <td>Address</td>
+                        <td>[[ results['address'] ]]</td>
                     </tr>
                     <tr>
-                        <td>Hash</td>
-                        <td>[[ results['block_hash'] ]]</td>
+                        <td>Active balance</td>
+                        <td>[[ results['balance'] ]] NexusCoin</td>
                     </tr>
                     <tr>
-                        <td>Previous hash</td>
-                        <td v-if="results['previous_hash']">
-                          <a v-bind:href="/block-info/ + [[ results['previous_hash'] ]]">
-                            [[ results['previous_hash'] ]]
-                          </a>
-                        </td>
-                        <td v-else>
-                            <a href='/block-info/0'>
-                                0000000000000000000000000000000000000000000000000000000000000000
-                            </a>
-                        </td>
+                        <td>QrCode</td>
+                        <td><qrcode v-bind:value="[[ results['address'] ]]"></qrcode></td>
                     </tr>
-                    <tr>
-                        <td>Timestamp</td>
-                        <td>[[ results['timestamp'] ]] ([[ results['timestamp'] | format_date ]])</td>
-                    </tr>
-                    <tr>
-                        <td>Data</td>
-                        <td>[[ results['data'] ]]</td>
-                    </tr>
-                    <tr>
-                        <td>Merkle root</td>
-                        <td>[[ results['merkle'] ]]</td>
-                    </tr>
-   
                   </tbody>
                 </table>
         </div>
@@ -79,18 +57,27 @@
                         <table class="table table-hover">
                                 <tr>
                                         <td colspan="3" align="left">
-                                        [[ tx['sender'] ]] 
+                                            <a v-bind:href="/address-info/ + [[ tx['sender'] ]]">
+                                                [[ tx['sender'] ]]
+                                            </a>
                                         <p>
                                             <div class="alert alert-info" role="alert">
                                                 Data: [[ tx['data'] ]]
                                             </div>
                                         </p>
                                         </td>
-                                    <td align="center">
+
+                                    <td align="center" v-if="check_equal([[ tx['sender'] ]], [[ results['address'] ]])">
+                                        <img src="{% static 'img/arrow_right_red.png' %}">
+                                    </td>
+                                    <td align="center" v-else>
                                         <img src="{% static 'img/arrow_right_green.png' %}">
+
                                     </td>
                                     <td align="right">
-                                        [[ tx['reciever'] ]]
+                                            <a v-bind:href="/address-info/ + [[ tx['reciever'] ]]">
+                                                [[ tx['reciever'] ]]
+                                            </a>
                                         <p>
                                             <div>
                                                 <button type="button" class="btn btn-success" v-if="[[ tx['confirmation'] ]] > 0">[[ tx['confirmation'] ]]

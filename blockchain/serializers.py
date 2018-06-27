@@ -55,3 +55,23 @@ class ProofOfNexusSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ProofOfNexus
         fields = ('nexus_hash', 'timestamp', 'nonce_range', 'random_chr', 'resolved')
+
+
+class TransactionsAPI(serializers.ModelSerializer):
+    class Meta:
+        model = models.TransactionDB
+        fields = '__all__'
+        
+
+class AddressInfoAPISerializer(serializers.ModelSerializer):
+    transactions = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Address
+        fields = ('address', 'balance', 'transactions')
+
+    def get_transactions(self, obj):
+        _sent = obj.Sender.all()
+        _recieved = obj.To.all()
+        # join two querysets using | operator then order by timestamp
+        return TransactionAPISerializer((_sent | _recieved).order_by('-timestamp'), many=True).data

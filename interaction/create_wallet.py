@@ -12,6 +12,7 @@ from web3.auto import w3
 class CreateAccount:
     def __init__(self, debug=False):
         self.debug = debug
+        # FIXME: create folder if not exist
         self.path = os.path.join(settings_wallet.KEY_STORE_PATH, 'keys')
         self.account = w3.eth.account.create(self.get_seed())
         self.write()

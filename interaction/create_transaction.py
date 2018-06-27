@@ -4,6 +4,7 @@
 #
 
 import requests
+from datetime import datetime
 import json
 from utils.fmt_debug import fmt_debug
 from web3.auto import w3
@@ -14,16 +15,22 @@ class CreateTransaction:
                     timestamp, fees=0, data='0x', debug=False):
         if not _from or not isinstance(_from, str):
             raise Exception('Address "from" is not valid')
+
         if not _from_priv or not isinstance(_from_priv, str):
             raise Exception('Need a valid private key to sign transaction')
+
         if not _to or not isinstance(_to, str):
             raise Exception('Address "to" is not valid')
+
         if not isinstance(amount, (int, float)) or amount < 0 :
             raise Exception('Amount is not valid')
+
         if not isinstance(timestamp, (int, float)):
             raise Exception('Timestamp is not valid')
+
         if not isinstance(fees, (int, float)) or fees < 0:
             raise Exception('Fees are not valid')
+            
         if not isinstance(data, str):
             raise Exception('Data are not valid')
 
@@ -83,13 +90,24 @@ class CreateTransaction:
 
 # Test
 if __name__ == '__main__':
+    
+    import os 
+
+    DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+    path = os.path.join(DIR_PATH, 'keystore/keys')
+    account = ''
+    with open(path, 'r') as f:
+        account = json.loads(f.read())
+
+    
     a = CreateTransaction(
-        _from='0x03E381073Cf3f3A7067F86d085F6258a2cA153A7', 
-        _to='0x11', 
+        _from=account.get('address'), 
+        _to='0x0000000000000000000000000000000000000000', 
         debug=True,
-        _from_priv='0xb20c7656f1ab5167b4cfa17d9c2d10271468048806ff4d5012c9bd8f8ee21198', 
+        _from_priv=account.get('privkey'), 
         amount=5, 
-        timestamp=1.2
+        timestamp=datetime.now().timestamp(),
+        fees=0.0001
     )
     a.send_raw_transaction()
 

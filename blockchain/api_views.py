@@ -119,6 +119,12 @@ class GetBlockAPI(viewsets.ViewSet):
 
 
 def check_signature(data, debug=False):
+    _from = data.get('from')
+    _to = data.get('to')
+    # Check addresses if they are Eth compatible
+    if not w3.isAddress(_from) or not w3.isAddress(_to):
+        return False
+        
     msg = '{0}-{1}-{2}-{3}-{4}-{5}'.format(
         data.get('from'),
         data.get('to'),
@@ -143,14 +149,16 @@ def check_signature(data, debug=False):
     return False
 
 def check_balance(data, sender):
-    _from = data.get('from')
+    fees = data.get('fees')
     amount = data.get('amount')
-    if not amount > 0:
-        return False, 'Amount must be positive'
+    if not isinstance(fees, (int, float)) or not isinstance(amount, (int, float)):
+        return Fakse, 'Amount/fees must be integer or float'
+    if not amount > 0 or not fees:
+        return False, 'Amount/fees must be positive'
     if not sender.balance:
         return False, 'Low balance'
 
-    if not (sender.balance >= amount):
+    if not (sender.balance >= (amount + fees)):
         return False, 'Amount to send is greater than actual balance'
 
     return True, False
@@ -178,15 +186,16 @@ class GetRawTransaction(viewsets.ViewSet):
                 resp['status'] = status.HTTP_400_BAD_REQUEST
                 resp['msg'] = err
                 return Response(resp)
-                
-            sender.balance -= request.data.get('amount')
+
+            amount = request.data.get('amount') + request.data.get('fees')
+            sender.balance -= amount
             sender.save()
-            reciever.balance += request.data.get('amount')
+            reciever.balance += amount
             reciever.save()
             transaction = models.TransactionDB.objects.create(
                 sender=sender,
                 reciever=reciever,
-                amount=request.data.get('amount'),
+                amount=amount,
                 data=request.data.get('data'),
                 timestamp=request.data.get('timestamp'),
                 fees=request.data.get('fees')
@@ -211,7 +220,6 @@ class MemPool(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         response = super(MemPool, self).list(request)
         return Response({'status': status.HTTP_200_OK, 'data': response.data})
-
 
 
 class ProofOfNexusAPI(viewsets.ViewSet):
@@ -240,3 +248,36 @@ class ProofOfNexusAPI(viewsets.ViewSet):
             return Response({'status': status.HTTP_200_OK, 'data': new_block.block_hash})
 
         return Response({'status': status.HTTP_400_BAD_REQUEST, 'data': []})
+
+class TransactionAPI(viewsets.ViewSet):
+    serializer_class = serializers.TransactionAPISerializer
+
+    def list(self, request, tx, *args, **kwargs):
+        query = models.TransactionDB.objects.filter(tx_hash=tx).first()
+        if not query:
+            return Response({'status': status.HTTP_404_NOT_FOUND, 'msg': 'Not found'})
+        serialized = self.serializer_class(query)
+        return Response({'status': status.HTTP_200_OK, 'data': serialized.data})
+
+class AddressAPI(viewsets.ViewSet):
+    serializer_class = serializers.AddressInfoAPISerializer
+
+    def list(self, request, address, *args, **kwargs):
+        if not w3.isAddress(address):
+            return Response({'status': status.HTTP_400_BAD_REQUEST, 'msg': 'Address not valid'})
+
+        query = models.Address.objects.filter(address=address.lower()).first()
+        if not query:
+            return Response({
+                'status': status.HTTP_200_OK,
+                'data': {
+                    'address': address.lower(),
+                    'balance': 0,
+                    'transactions': []
+                }
+            })
+
+        serialized = self.serializer_class(query)
+        return Response({'status': status.HTTP_200_OK, 'data': serialized.data})
+        
+        

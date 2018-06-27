@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Transaction informations
+{% endblock %}
+
+{% block content %}
+
+<div id='app'>
+    <div v-if="status_code == 200">
+        <div class="container">
+                <h2><b>Transaction</b> </h2>
+                <p>Show transaction's informations</p>
+                <table class="table table-hover">
+                  <thead>
+                    <tr class="table-primary">
+                      <th>Summary</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td>Transaction hash</td>
+                        <td>[[ results['tx_hash'] ]]</td>
+                    </tr>
+                    <tr>
+                        <td>Sender</td>
+                        <td>[[ results['sender'] ]]</td>
+                    </tr>
+                    <tr>
+                        <td>Reciever</td>
+                        <td>[[ results['reciever'] ]]</td>
+                    </tr>
+                    <tr>
+                        <td>Amount</td>
+                        <td>[[ results['amount'] ]] NexusCoin</td>
+                    </tr>
+                    <tr>
+                        <td>Timestamp</td>
+                        <td>[[ results['timestamp'] ]] ([[ results['timestamp'] | format_date ]])</td>
+                    </tr>
+                    <tr>
+                        <td>Data</td>
+                        <td>[[ results['data'] ]]</td>
+                    </tr>
+                    <tr>
+                        <td>Confirmation</td>
+                        <td>[[ results['confirmation'] ]] Confirmation(s)</td>
+                    </tr>
+                    <tr>
+                        <td>Fees</td>
+                        <td>[[ results['fees'] ]] NexusCoin</td>
+                    </tr>
+                    <tr>
+                        <td>Included in block</td>
+                        <td><a v-bind:href="/block-info/ + [[ results['block'] ]]" >[[ results['block'] ]]</a></td>
+                    </tr>
+   
+                  </tbody>
+                </table>
+        </div>
+    </div>
+    <div v-else>
+        error [[ status_code ]]
+    </div>
+</div>
+
+{% endblock %}

@@ -9,6 +9,7 @@
             <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
             <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
             <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+            <script type="text/javascript" src="{% static 'js/qrcode-vue.js' %}"></script>
         {% endblock %}
     </head>
     <title>
@@ -20,7 +21,71 @@
         {% endblock %}
     </body>
     <footer>
-        {% block footer %}
-        {% endblock %}
+            {% block footer %}
+
+            <script>
+                var url = "{{ base_url }}";
+                var Vue = window.Vue;
+                var VueQrcode = window.VueQrcode;
+                Vue.component('qrcode', VueQrcode);
+                var app = new Vue({
+                    
+                    delimiters : ['[[', ']]'],
+                    el: '#app',
+                    data: {
+                        results: '',
+                        msg:'',
+                        status_code: '',
+                        value: ''
+                    },
+                    component: {
+                        qrcode: VueQrcode
+
+                    },
+                    filters: {
+                        format_date: function(value){
+                            if(value){
+                                var date = moment.unix(value).format('YYYY/MM/DD HH:mm:SS ZUTC');
+                                return date
+                            }
+                        },
+                        format_date2: function(value){
+                            if(value){
+                                var date = moment.unix(value).format('YYYY/MM/DD HH:mm:SS');
+                                return date
+                            }
+                        }
+            
+                    },
+                    methods: {
+                        fetch_data: function(){
+                            axios.get(url).then(
+                                   response => (
+                                    this.results = response.data['data'],
+                                    this.msg = response.data['msg'],
+                                    this.status_code = response.data['status']
+                                   )
+                            ).catch(function(error){
+                                console.log(error);
+                            })
+                        },
+                        check_equal: function(value1, value2){
+                            // Damn! JS/VueJS can't compare correctly two strings !?
+                            //console.log(value1[0][0], value2[0][0])
+                            //console.log(value1[0][0] == value2[0][0]);
+                            if (value1[0][0] == value2[0][0]){
+                                return true
+                            } else {
+                                return false
+                            }
+                        }
+                    },
+                    beforeMount(){
+                        this.fetch_data()
+                    }
+                })
+            </script>
+            
+            {% endblock %}
     </footer>
 </html>
