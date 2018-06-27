@@ -45,6 +45,12 @@ $> python create_transaction.py
 
 - Then you have a list of a files try them all if you want :-)
 
+## Screenshots
+
+![block](./screenshots/block.png  "block")
+
+![address](./screenshots/address.png  "address")
+
 # PS:
 
 - This project still in eraly phase, only some API's are implemented.
