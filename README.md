@@ -37,10 +37,10 @@ $> python mining.py
 Quit [q/Q] else Continue: q
 
 $> python create_transaction.py 
--> [27/06/2018 20:49:50] INFO: Sending Transaction:
-{"signature": "0x40e376f9f40850fcf8b8aba2e64c60a28309d22ccfce2fa4464b7d196281c35b2c64f8732b1e2953bfafa8de106811986b32d907c7210330de59695a239020ca1c", "timestamp": 1530128990.355376, "from": "0xE0179D4DA5b16443C18450f35e46B2a716ae8f74", "amount": 5, "fees": 0.0001, "to": "0x0000000000000000000000000000000000000000", "data": "0x"}
+-> [27/06/2018 21:08:49] INFO: Sending Transaction:
+{"amount": 5, "to": "0x0000000000000000000000000000000000000000", "from": "0xE0179D4DA5b16443C18450f35e46B2a716ae8f74", "fees": 0.0001, "data": "0x", "timestamp": 1530130129.167453, "signature": "0xa998b1555fd5c9e4eb3872f36edc587a2406bdaf98044957bd0a9675667d8a3823886ae5e3f9701a3b0d81d190a2c13cd4641f88984753ec5f37e6c866c2a1731b"}
 
--> [27/06/2018 20:49:50] INFO: Server response: {"signature":false,"status":400,"msg":"Low balance","tx_hash":null}
+-> [27/06/2018 21:08:49] INFO: Server response: {"signature":true,"status":200,"tx_hash":"3aabcbf8e7f12a10eb4474b6ecdd35081b098da54815bb81cf8e146dfb4805dc"}
 ```
 
 - Then you have a list of a files try them all if you want :-)
