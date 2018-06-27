@@ -3,11 +3,13 @@
 #
 #
 
+import os
 import hashlib
 import time
 import re 
 import requests
 import json
+import settings_wallet
 from utils.fmt_debug import fmt_debug
 
 class Mining:
@@ -16,7 +18,9 @@ class Mining:
         self.get_job_url = 'http://127.0.0.1:8000/api/proof-of-nexus/'
         self.headers = {'content-type': 'application/json'}
         self.miner_name = 'Nexus'
-        self.miner_address = '0x03E381073Cf3f3A7067F86d085F6258a2cA153A7'
+        path = os.path.join(settings_wallet.KEY_STORE_PATH, 'keys')
+        with open(path, 'r') as f:
+            self.miner_address = json.loads(f.read())['address']
         self.check_genesis()
 
     def check_genesis(self):
