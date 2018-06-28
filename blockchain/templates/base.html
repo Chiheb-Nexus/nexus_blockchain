@@ -19,7 +19,7 @@
     <body>
         {% block navbar %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#">NexusCoin</a>
+                <a class="navbar-brand" href="/">NexusCoin</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
@@ -27,8 +27,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
                   </ul>
-                  <form class="form-inline my-2 my-lg-2">
-                    <input class="form-control mr-sm-2" type="search" placeholder="block, hash, transaction" aria-label="Search">
+                  <form class="form-inline my-2 my-lg-2" action="{% url 'search' %}" method="post">
+                      {% csrf_token %}
+                    <input class="form-control mr-sm-2" name="search-input" type="search" placeholder="block, hash, transaction" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                   </form>
                 </div>
@@ -38,7 +39,7 @@
         {% block content %}
         {% endblock %}
     </body>
-    <footer class="page-footer font-small cyan darken-3 mt-4">
+    <footer class="container-fluid w-100 bg-dark text-light py-3">
             {% block footer %}
 
             <script>
@@ -54,7 +55,7 @@
                         results: '',
                         msg:'',
                         status_code: '',
-                        value: ''
+                        value: '',
                     },
                     component: {
                         qrcode: VueQrcode
@@ -106,9 +107,8 @@
             
             {% endblock %}
             {% block stickyfooter %}
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <center>©2018 - <a class="navbar-brand" href="#">Chiheb Nexus</a></center>
-            </nav>
+                <center><a href="https://chiheb-nexus.github.io">Chiheb Nexus</a> © - 2018</center>
+            
             {% endblock %}
     </footer>
 </html>

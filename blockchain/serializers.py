@@ -14,14 +14,6 @@ class SubAddressAPISerializer(serializers.ModelSerializer):
         model = models.Address
         fields = ('address', )
 
-class TransactionAPISerializer(serializers.ModelSerializer):
-    sender = SubAddressAPISerializer(many=False)
-    reciever = SubAddressAPISerializer(many=False)
-    
-    class Meta:
-        model = models.TransactionDB
-        fields = '__all__'
-
 
 class SubGetBlockAPISerializer(serializers.ModelSerializer):
     '''Recursive serializer used to get previous_hash'''
@@ -34,6 +26,16 @@ class SubGetBlockAPISerializer(serializers.ModelSerializer):
     class Meta:
         model = models.BlockStructureDB
         fields = ('block_hash',)
+
+
+class TransactionAPISerializer(serializers.ModelSerializer):
+    sender = SubAddressAPISerializer(many=False)
+    reciever = SubAddressAPISerializer(many=False)
+    block = SubGetBlockAPISerializer(many=False)
+    
+    class Meta:
+        model = models.TransactionDB
+        fields = '__all__'
 
 
 class GetBlockAPISerializer(serializers.ModelSerializer):
@@ -50,6 +52,7 @@ class GetBlockAPISerializer(serializers.ModelSerializer):
     class Meta:
         model = models.BlockStructureDB
         fields = '__all__'
+
 
 class ProofOfNexusSerializer(serializers.ModelSerializer):
     class Meta:
@@ -75,3 +78,10 @@ class AddressInfoAPISerializer(serializers.ModelSerializer):
         _recieved = obj.To.all()
         # join two querysets using | operator then order by timestamp
         return TransactionAPISerializer((_sent | _recieved).order_by('-timestamp'), many=True).data
+        
+
+class GetLastBlocks(serializers.Serializer):
+    '''Custom serializer for a list of values'''
+    height = serializers.IntegerField()
+    block_hash = serializers.CharField(max_length=64)
+    timestamp = serializers.FloatField()

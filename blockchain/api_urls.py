@@ -27,5 +27,8 @@ urlpatterns = [
     }), name='transaction'),
     re_path(r'address/(?P<address>0x[0-9a-fA-F]{,64})', api_views.AddressAPI.as_view({
         'get': 'list'
-    }), name='address')
+    }), name='address'),
+    re_path(r'last-blocks', api_views.LastFiveBlocks.as_view({
+        'get': 'list'
+    }), name='last_blocks')
 ]

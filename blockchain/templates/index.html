@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Block informations
+{% endblock %}
+
+{% block content %}
+
+<div id='app'>
+        <div v-if="status_code == 200">
+            <div class="container">
+                    <h2><b>Last Blocks</b> </h2>
+                    <!--<div v-show="results.length != 0" class="container">-->
+                    
+                    <table class="table table-hover">
+                      <thead>
+                        <tr class="table-primary">
+                          <th>Height</th>
+                          <th>Timestamp</th>
+                          <th>Hash</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <template v-for="item in results ">
+                            <tr>
+                                <td>
+                                    <a v-bind:href="/block-info/ + [[ item['height'] ]]">
+                                    [[ item['height'] ]]
+                                    </a>
+                                </td>
+                                <td>[[ item['timestamp'] | format_date2 ]]</td>
+                                <td>
+                                    <a v-bind:href="/block-info/ + [[ item['block_hash'] ]]">
+                                        [[ item['block_hash'] ]]
+                                    </a>
+                                </td>
+                            </tr>
+                        </template>
+                        </tbody>
+                    </table>
+                    <!--</div>-->
+            </div>
+        </div>
+<div v-else>
+    Error [[ status_code ]]
+</div>
+</div>
+{% endblock %}

@@ -26,11 +26,19 @@
                     </tr>
                     <tr>
                         <td>Sender</td>
-                        <td>[[ results['sender'] ]]</td>
+                        <td>
+                            <a v-bind:href="/address-info/ + [[ results['sender'] ]]">
+                                [[ results['sender'] ]]
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td>Reciever</td>
-                        <td>[[ results['reciever'] ]]</td>
+                        <td>
+                            <a v-bind:href="/address-info/ + [[ results['reciever'] ]]">
+                                [[ results['reciever'] ]]
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td>Amount</td>

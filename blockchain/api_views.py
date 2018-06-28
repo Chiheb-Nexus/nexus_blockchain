@@ -279,5 +279,18 @@ class AddressAPI(viewsets.ViewSet):
 
         serialized = self.serializer_class(query)
         return Response({'status': status.HTTP_200_OK, 'data': serialized.data})
+
+
+class LastFiveBlocks(viewsets.ViewSet):
+    serializer_class = serializers.GetLastBlocks
+
+    def list(self, request, *args, **kwargs):
+        query = models.BlockStructureDB.objects.all().order_by('-height')[:5].values(
+            'height', 
+            'block_hash',
+            'timestamp'
+        )
+        serialized = self.serializer_class(query, many=True)
+        return Response({'status': status.HTTP_200_OK, 'data': serialized.data})
         
         
