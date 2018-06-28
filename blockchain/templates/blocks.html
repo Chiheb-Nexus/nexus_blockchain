@@ -79,7 +79,9 @@
                         <table class="table table-hover">
                                 <tr>
                                         <td colspan="3" align="left">
-                                        [[ tx['sender'] ]] 
+                                            <a v-bind:href="/address-info/ + [[ tx['sender'] ]]">
+                                                [[ tx['sender'] ]]
+                                            </a> 
                                         <p>
                                             <div class="alert alert-info" role="alert">
                                                 Data: [[ tx['data'] ]]
@@ -90,7 +92,9 @@
                                         <img src="{% static 'img/arrow_right_green.png' %}">
                                     </td>
                                     <td align="right">
-                                        [[ tx['reciever'] ]]
+                                        <a v-bind:href="/address-info/ + [[ tx['reciever'] ]]">
+                                            [[ tx['reciever'] ]]
+                                        </a>
                                         <p>
                                             <div>
                                                 <button type="button" class="btn btn-success" v-if="[[ tx['confirmation'] ]] > 0">[[ tx['confirmation'] ]]
