@@ -22,7 +22,7 @@ urlpatterns = [
     re_path(r'block/(?P<height>[0-9a-fA-F]{,64})', api_views.GetBlockAPI.as_view({
         'get': 'list'
     }), name='block'),
-    re_path(r'transaction/(?P<tx>[0-9a-fA-F]{,64})', api_views.TransactionAPI.as_view({
+    re_path(r'transaction/(?P<_tx>[0-9a-fA-F]{,64})', api_views.TransactionAPI.as_view({
         'get': 'list'
     }), name='transaction'),
     re_path(r'address/(?P<address>0x[0-9a-fA-F]{,64})', api_views.AddressAPI.as_view({
