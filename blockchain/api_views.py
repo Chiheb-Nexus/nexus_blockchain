@@ -152,7 +152,7 @@ def check_balance(data, sender):
     fees = data.get('fees')
     amount = data.get('amount')
     if not isinstance(fees, (int, float)) or not isinstance(amount, (int, float)):
-        return Fakse, 'Amount/fees must be integer or float'
+        return False, 'Amount/fees must be integer or float'
     if not amount > 0 or not fees:
         return False, 'Amount/fees must be positive'
     if not sender.balance:
