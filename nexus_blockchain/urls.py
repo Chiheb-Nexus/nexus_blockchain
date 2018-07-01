@@ -22,5 +22,5 @@ urlpatterns = [
     path('', include('blockchain.urls'))
 ]
 
-handler500= 'blockchain.handler_views.views.Handler500'
+handler500 = 'blockchain.handler_views.views.Handler500'
 handler404 = 'blockchain.handler_views.views.Handler404'

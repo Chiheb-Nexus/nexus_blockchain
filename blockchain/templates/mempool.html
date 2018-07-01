@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Unconfirmed Transactions
+{% endblock %}
+
+{% block content %}
+
+<div id='app' style="height:100vh;width:100vw">
+    <div v-if="status_code == 200">
+        <div class="container">
+                <h2><b>Unconfirmed Transactions</b> </h2>
+                    <template v-if="results != 0">
+                    <div v-for="tx in results">
+                        <table class="table table-hover">
+                            <!--<thead>-->
+                                <tr class="table-primary">
+                                    <th colspan="3" align="left">
+                                        <a v-bind:href="/transaction-info/ + [[ tx['tx_hash'] ]]">
+                                            [[ tx['tx_hash'] ]]
+                                        </a>
+                                    </th>
+                                    <th>
+                                            Fees: [[ tx['fees'] ]]
+                                    </th>
+                                    <th>
+                                            [[ tx['timestamp'] | format_date2 ]]
+                                    </th>
+                                </tr>
+                        </table>
+                        <table class="table table-hover">
+                                <tr>
+                                        <td colspan="3" align="left">
+                                            <a v-bind:href="/address-info/ + [[ tx['sender'] ]]">
+                                                [[ tx['sender'] ]]
+                                            </a>
+                                        <p>
+                                            <div class="alert alert-info" role="alert">
+                                                Data: [[ tx['data'] ]]
+                                            </div>
+                                        </p>
+                                        </td>
+
+                                    <td align="center" v-if="check_equal([[ tx['sender'] ]], [[ results['address'] ]])">
+                                        <img src="{% static 'img/arrow_right_red.png' %}">
+                                    </td>
+                                    <td align="center" v-else>
+                                        <img src="{% static 'img/arrow_right_green.png' %}">
+
+                                    </td>
+                                    <td align="right">
+                                            <a v-bind:href="/address-info/ + [[ tx['reciever'] ]]">
+                                                [[ tx['reciever'] ]]
+                                            </a>
+                                        <p>
+                                            <div>
+                                                <button type="button" class="btn btn-success" v-if="[[ tx['confirmation'] ]] > 0">[[ tx['confirmation'] ]]
+                                                    <span class="badge badge-secondary">Confirmation(s)</span>
+                                                </button>
+                                                <button type="button" class="btn btn-danger" v-else>Confirmation(s) 
+                                                        <span class="badge badge-secondary">[[ tx['confirmation'] ]]</span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary">[[ tx['amount'] ]]
+                                                    <span class="badge badge-secondary">NexusCoin </span>
+                                                </button>
+                                            </div>
+                                        </p>
+                                    </td>
+                                    </tr>
+                        </table>
+                </div>
+                </template>
+                <template v-else>
+                <div>
+                    All transactions are cleared
+                </div>
+                </template>
+        </div>
+</div>
+<div v-else>
+    Error [[ status_code ]]
+</div>
+</div>
+{% endblock %}

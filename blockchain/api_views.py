@@ -5,18 +5,22 @@
 
 from datetime import datetime
 from django.db.models import F
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+# If you want to render the response into a JSON format only
+# from rest_framework import renderers
 from rest_framework.response import Response
-from rest_framework import status
 from web3.auto import w3
 from eth_account.messages import defunct_hash_message
-from blockchain import serializers
-from blockchain import models
+from blockchain import serializers, models
 from blockchain.utils.block import BlockStructure
 
 
-def _create_reward_tx(timestamp, data, reciever_addr, amount,
-                      sender_addr='0x0000000000000000000000000000000000000000'):
+def _create_reward_tx(
+        timestamp,
+        data,
+        reciever_addr,
+        amount,
+        sender_addr='0x0000000000000000000000000000000000000000'):
     last_block = models.BlockStructureDB.objects.last()
     if last_block:
         new_block = models.BlockStructureDB.objects.create(
@@ -26,7 +30,10 @@ def _create_reward_tx(timestamp, data, reciever_addr, amount,
         )
         new_block.save()
     else:
-        raise Exception('Must at least be one valid block which is Genesis Block!')
+        raise Exception(
+            'Must at least be one valid block'
+            'which is Genesis Block!'
+        )
 
     sender, _ = models.Address.objects.get_or_create(
         address=sender_addr.lower())
@@ -45,15 +52,16 @@ def _create_reward_tx(timestamp, data, reciever_addr, amount,
     )
     models.TransactionDB.objects.filter(
         confirmation=0
-    ).update(block=new_block, confirmation=F('confirmation')+1)
+    ).update(block=new_block, confirmation=F('confirmation') + 1)
     new_block.save()
 
     return new_block
 
+
 class GenesisBlockAPI(viewsets.ViewSet):
     '''Get Genesis block is exists else create new one'''
 
-    def list(self):
+    def list(self, *args, **kwargs):
         '''Get method returns Genesis block data'''
 
         genesis = models.BlockStructureDB.objects.first()
@@ -90,6 +98,7 @@ class GenesisBlockAPI(viewsets.ViewSet):
 
         serialized = serializers.GetBlockAPISerializer(genesis)
         return Response(serialized.data)
+
 
 class GetBlockAPI(viewsets.ViewSet):
     '''Get or create new block from mining process'''
@@ -149,24 +158,26 @@ def check_signature(data, debug=False):
         signature=data.get('signature')
     )
     if debug:
-        print('POST: {0} | Check: {1}'
-              .format(
-                  data.get('from'),
-                  pub_key),
-              pub_key == data.get('from')
-             )
+        print('POST: {0} | Check: {1}'.format(
+            data.get('from'),
+            pub_key),
+            pub_key == data.get('from')
+        )
 
     if data.get('from') == pub_key:
         return True
 
     return False
 
+
 def check_balance(data, sender):
     '''Check sender balance'''
 
     fees = data.get('fees')
     amount = data.get('amount')
-    if not isinstance(fees, (int, float)) or not isinstance(amount, (int, float)):
+    if not isinstance(
+            fees, (int, float)) or not isinstance(
+            amount, (int, float)):
         return False, 'Amount/fees must be integer or float'
     if not amount > 0 or not fees:
         return False, 'Amount/fees must be positive'
@@ -177,6 +188,7 @@ def check_balance(data, sender):
         return False, 'Amount to send is greater than actual balance'
 
     return True, False
+
 
 class GetRawTransaction(viewsets.ViewSet):
     '''Get raw transaction using CRUD routes'''
@@ -227,12 +239,14 @@ class GetRawTransaction(viewsets.ViewSet):
         return Response(resp)
 
 
-class MemPool(viewsets.ModelViewSet): # pylint: disable=too-many-ancestors
-    '''Return all pending transactions'''
+class MemPool(viewsets.ModelViewSet):  # pylint: disable=too-many-ancestors
+    """Return all pending transactions"""
 
     serializer_class = serializers.TransactionAPISerializer
     queryset = models.TransactionDB.objects.filter(confirmation=0)
     http_method_names = ['get', 'head']
+    # If you want to render the response only in JSON format
+    # renderer_classes = [renderers.JSONRenderer]
 
     def list(self, request, *args, **kwargs):
         '''Get response of all pending transactions'''
@@ -286,6 +300,7 @@ class ProofOfNexusAPI(viewsets.ViewSet):
             'data': []
         })
 
+
 class TransactionAPI(viewsets.ViewSet):
     '''Get transactions'''
 
@@ -306,6 +321,7 @@ class TransactionAPI(viewsets.ViewSet):
             'status': status.HTTP_200_OK,
             'data': serialized.data
         })
+
 
 class AddressAPI(viewsets.ViewSet):
     '''Address informations'''
@@ -347,7 +363,8 @@ class LastFiveBlocks(viewsets.ViewSet):
     def list(self, request, *args, **kwargs):
         '''GET returns last 5 blocks'''
 
-        query = models.BlockStructureDB.objects.all().order_by('-height')[:5].values(
+        query = models.BlockStructureDB.objects.all().order_by(
+            '-height')[:5].values(
             'height',
             'block_hash',
             'timestamp'

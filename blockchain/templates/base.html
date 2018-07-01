@@ -19,13 +19,16 @@
     <body>
         {% block navbar %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="/">NexusCoin</a>
+                <a class="navbar-brand" href="/">NexusCoin explorer</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
               
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul></ul>
+                    <ul></ul>
                   <ul class="navbar-nav mr-auto">
+                      <li><a class="navbar-brand" href="http://127.0.0.1:8000/mempool">Mempool</a></li>
                   </ul>
                   <form class="form-inline my-2 my-lg-2" action="{% url 'search' %}" method="post">
                       {% csrf_token %}
@@ -39,7 +42,7 @@
         {% block content %}
         {% endblock %}
     </body>
-    <footer class="container-fluid w-100 bg-dark text-light py-3">
+    <footer class=" bg-dark text-light py-3 fluid-container footer">
             {% block footer %}
 
             <script>
@@ -56,6 +59,7 @@
                         msg:'',
                         status_code: '',
                         value: '',
+                        interval: null
                     },
                     component: {
                         qrcode: VueQrcode
@@ -75,6 +79,13 @@
                             }
                         }
             
+                    },
+                    mounted() {
+                        if (url == '/api/last-blocks' && window.location.pathname == '/') { // refresh only 
+                            this.interval = setInterval(function(){
+                                this.fetch_data();
+                            }.bind(this), 3000); // refresh every 3s
+                        } 
                     },
                     methods: {
                         fetch_data: function(){
@@ -110,5 +121,14 @@
                 <center><a href="https://chiheb-nexus.github.io">Chiheb Nexus</a> © - 2018</center>
             
             {% endblock %}
+            <style>
+               .fluid-container.footer{
+                    background: black;
+                }
+                .fluid-container.footer > *:last-child {
+                    margin-bottom: 0px;
+                    color: #fff;
+                }
+            </style>
     </footer>
 </html>
