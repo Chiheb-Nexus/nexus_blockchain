@@ -3,7 +3,7 @@
 #
 #
 
-import datetime
+from datetime import datetime
 from django.test import TestCase
 from blockchain.models import (
     BlockStructureDB,
@@ -15,20 +15,20 @@ class TestBlockStructureDB(TestCase):
     def setUp(self):
         block = BlockStructureDB.objects.create(
             height=0,
-            timestamp=datetime.datetime.now().timestamp(),
+            timestamp=datetime.now().timestamp(),
             data='Genesis Block!',
             block_hash='0x00000000FF',
             merkle='0x0000FF'
         )
         first = BlockStructureDB.objects.create(
-            timestamp=datetime.datetime.now().timestamp(),
+            timestamp=datetime.now().timestamp(),
             data='0x0',
             block_hash='0x00FF',
             merkle='0x0FFF',
             previous_hash=block
         )
         second = BlockStructureDB.objects.create(
-            timestamp=datetime.datetime.now().timestamp(),
+            timestamp=datetime.now().timestamp(),
             previous_hash=first
         )
 

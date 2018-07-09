@@ -7,7 +7,7 @@ import hashlib
 import struct
 import random
 from binascii import hexlify
-from os import urandom 
+from os import urandom
 from functools import reduce
 from datetime import datetime
 from django.db import models
@@ -16,19 +16,42 @@ from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from blockchain.utils.block import BlockStructure
 
+
 class BlockStructureDB(models.Model):
-    height          = models.AutoField(primary_key=True, verbose_name='Height', 
-                                blank=False, null=False)
-    timestamp       = models.FloatField(unique=True, verbose_name='Timestamp', 
-                                blank=False, null=False)
-    data            = models.TextField(verbose_name='Data', default='0x0')
-    previous_hash   = models.ForeignKey('self', to_field='height', verbose_name='Previous Hash',
-                                related_name='PreviousHash', blank=True,
-                                null=True, on_delete=models.CASCADE)
-    block_hash      = models.CharField(max_length=250, verbose_name='Block Hash',
-                                blank=True, null=True)
-    merkle          = models.CharField(max_length=250, verbose_name='Merkle Root', 
-                                blank=True, null=True)
+    height = models.AutoField(
+        primary_key=True,
+        verbose_name='Height',
+        blank=False, null=False
+    )
+    timestamp = models.FloatField(
+        unique=True,
+        verbose_name='Timestamp',
+        blank=False, null=False
+    )
+    data = models.TextField(
+        verbose_name='Data',
+        default='0x0'
+    )
+    previous_hash = models.ForeignKey(
+        'self',
+        to_field='height',
+        verbose_name='Previous Hash',
+        related_name='PreviousHash',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    block_hash = models.CharField(
+        max_length=250,
+        verbose_name='Block Hash',
+        blank=True, null=True
+    )
+    merkle = models.CharField(
+        max_length=250,
+        verbose_name='Merkle Root',
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return self.block_hash
@@ -37,42 +60,42 @@ class BlockStructureDB(models.Model):
         verbose_name = 'Block Structure'
         verbose_name_plural = 'Blocks Structure'
 
+
 def _merkle_root(iterable):
     '''Basic implementation of merkle root'''
 
     merkle = ''
     sha256 = hashlib.sha256()
     if iterable.count() >= 2:
-        merkle = reduce(
-            lambda x,y: hashlib.sha256(
-                (
-                    x if isinstance(x, str) else x.tx_hash + y.tx_hash
-                ).encode()).hexdigest(),
-                iterable
+        merkle = reduce(lambda x, y: hashlib.sha256(
+            (x if isinstance(x, str) else x.tx_hash + y.tx_hash).encode())
+            .hexdigest(),
+            iterable
         )
     elif iterable.count() == 1:
         sha256.update(iterable[0].tx_hash.encode())
         merkle = sha256.hexdigest()
-    # We should never go to this section ! 
+    # We should never go to this section !
     # There will be always at least one transaction
     # In every block !!!
     # Hope so ^_(o_0)_^ !!
-    #else:
+    # else:
     #    sha256.update(''.encode())
     #    merkle = sha256.hexdigest()
     return merkle
-        
+
 
 @receiver(pre_save, sender=BlockStructureDB)
 def add_hash(sender, instance, *args, **kwargs):
     if not instance.block_hash:
         block = BlockStructure(
-            index=instance.height, 
+            index=instance.height,
             previous_hash=instance.previous_hash,
             data=instance.data,
             timestamp=instance.timestamp
         )
         instance.block_hash = block.hash
+
 
 @receiver(post_save, sender=BlockStructureDB)
 def add_merkle_root(sender, instance, *args, **kwargs):
@@ -101,24 +124,66 @@ class Address(models.Model):
 
 def _create_hash(seed_length=64):
     sha256 = hashlib.sha256()
-    seed = hexlify(urandom(seed_length) + struct.pack('f', datetime.now().timestamp()))
+    seed = hexlify(
+        urandom(seed_length) + struct.pack('f', datetime.now().timestamp())
+    )
     sha256.update(seed)
     return sha256.hexdigest()
-    
+
+
 class TransactionDB(models.Model):
-    tx_hash = models.CharField(max_length=64, verbose_name='Tx Hash', primary_key=True,
-                default=_create_hash, blank=False, null=False)
-    sender = models.ForeignKey(Address, verbose_name='From', related_name='Sender', 
-                on_delete=models.DO_NOTHING)
-    reciever = models.ForeignKey(Address, verbose_name='To', related_name='To',
-                on_delete=models.DO_NOTHING)
-    amount = models.FloatField(verbose_name='Amount', default=0)
-    data = models.CharField(max_length=250, verbose_name='Data', null=True, blank=True)
-    timestamp = models.FloatField(verbose_name='Timestamp', null=False, blank=False)
-    block = models.ForeignKey(BlockStructureDB, verbose_name='Block', null=True, blank=True,
-                related_name='get_block', on_delete=models.CASCADE)
-    confirmation = models.IntegerField(verbose_name='Confirmation', default=0)
-    fees = models.FloatField(verbose_name='Fees', default=0, validators=[MinValueValidator(0.0)])
+    tx_hash = models.CharField(
+        max_length=64,
+        verbose_name='Tx Hash',
+        primary_key=True,
+        default=_create_hash,
+        blank=False,
+        null=False
+    )
+    sender = models.ForeignKey(
+        Address,
+        verbose_name='From',
+        related_name='Sender',
+        on_delete=models.DO_NOTHING
+    )
+    reciever = models.ForeignKey(
+        Address,
+        verbose_name='To',
+        related_name='To',
+        on_delete=models.DO_NOTHING
+    )
+    amount = models.FloatField(
+        verbose_name='Amount',
+        default=0
+    )
+    data = models.CharField(
+        max_length=250,
+        verbose_name='Data',
+        null=True,
+        blank=True
+    )
+    timestamp = models.FloatField(
+        verbose_name='Timestamp',
+        null=False,
+        blank=False
+    )
+    block = models.ForeignKey(
+        BlockStructureDB,
+        verbose_name='Block',
+        null=True,
+        blank=True,
+        related_name='get_block',
+        on_delete=models.CASCADE
+    )
+    confirmation = models.IntegerField(
+        verbose_name='Confirmation',
+        default=0
+    )
+    fees = models.FloatField(
+        verbose_name='Fees',
+        default=0,
+        validators=[MinValueValidator(0.0)]
+    )
 
     def __str__(self):
         return self.tx_hash
@@ -128,14 +193,39 @@ class TransactionDB(models.Model):
         verbose_name_plural = 'Transactions Structure'
         ordering = ('-timestamp',)
 
- 
+
 class ProofOfNexus(models.Model):
-    nexus_hash = models.CharField(max_length=250, verbose_name='Nexus Hash', blank=True, null=True)
-    timestamp = models.FloatField(verbose_name='Timestamp', blank=True, null=True)
-    nonce = models.IntegerField(verbose_name='Nonce', blank=True, null=True)
-    nonce_range = models.CharField(max_length=250, verbose_name='Nonce range', blank=True, null=True)
-    random_chr = models.CharField(max_length=250, verbose_name='Random Character', blank=True, null=True)
-    resolved = models.BooleanField(verbose_name='Resolved', default=False)
+    nexus_hash = models.CharField(
+        max_length=250,
+        verbose_name='Nexus Hash',
+        blank=True,
+        null=True
+    )
+    timestamp = models.FloatField(
+        verbose_name='Timestamp',
+        blank=True,
+        null=True
+    )
+    nonce = models.IntegerField(
+        verbose_name='Nonce',
+        blank=True,
+        null=True
+    )
+    nonce_range = models.CharField(
+        max_length=250,
+        verbose_name='Nonce range',
+        blank=True,
+        null=True
+    )
+    random_chr = models.CharField(
+        max_length=250,
+        verbose_name='Random Character',
+        blank=True, null=True
+    )
+    resolved = models.BooleanField(
+        verbose_name='Resolved',
+        default=False
+    )
 
     def __str__(self):
         return self.nexus_hash
@@ -151,6 +241,7 @@ def get_random_range():
         index, last = last, index
 
     return index, last, 'range({0}, {1})'.format(index, last)
+
 
 @receiver(post_save, sender=ProofOfNexus)
 def get_work(sender, instance, created, *args, **kwargs):
