@@ -66,7 +66,10 @@ class GenesisBlockAPI(viewsets.ViewSet):
 
         genesis = models.BlockStructureDB.objects.first()
         if not genesis:
-            return Response({'status': status.HTTP_404_NOT_FOUND, 'data': []})
+            return Response({
+                'status': status.HTTP_404_NOT_FOUND,
+                'data': []
+            })
         serialized = serializers.GetBlockAPISerializer(genesis)
         return Response({
             'status': status.HTTP_200_OK,

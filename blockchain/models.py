@@ -65,7 +65,6 @@ def _merkle_root(iterable):
 
 @receiver(pre_save, sender=BlockStructureDB)
 def add_hash(sender, instance, *args, **kwargs):
-    print('hit: pre_save', instance.pk)
     if not instance.block_hash:
         block = BlockStructure(
             index=instance.height, 
@@ -77,7 +76,6 @@ def add_hash(sender, instance, *args, **kwargs):
 
 @receiver(post_save, sender=BlockStructureDB)
 def add_merkle_root(sender, instance, *args, **kwargs):
-    print('hit: post_save', instance.pk)
     block_tx = BlockStructureDB.objects.filter(pk=instance.pk).first()
     if not instance.merkle and block_tx:
         if block_tx:
