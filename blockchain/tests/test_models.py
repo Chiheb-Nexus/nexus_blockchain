@@ -3,10 +3,13 @@
 #
 #
 
+import os
 from datetime import datetime
+from web3.auto import w3
 from django.test import TestCase
 from blockchain.models import (
     BlockStructureDB,
+    TransactionDB,
     Address
 )
 
@@ -60,3 +63,35 @@ class TestBlockStructureDB(TestCase):
         self.assertEqual(block.height, 2)
         self.assertIsNotNone(block.block_hash)
         self.assertIsNone(block.merkle)
+
+
+class TestTransactionDB(TestCase):
+    def generate_account(self):
+        '''Generate random private & public addresses'''
+        account = w3.eth.account.create(os.urandom(64))
+        return account.address, account.privateKey
+
+    def setUp(self):
+        self.address1, self.priv1 = self.generate_account()
+        self.address2, self.priv2 = self.generate_account()
+        sender = Address.objects.create(address=self.address1, balance=20)
+        reciever = Address.objects.create(address=self.address2)
+        # first tx
+        tx = TransactionDB.objects.create(
+            sender=sender,
+            reciever=reciever,
+            amount=10,
+            timestamp=datetime.now().timestamp(),
+            data="tx sent!"
+        )
+
+    def test_valid_tx(self):
+        '''Check if Transaction is well created'''
+        tx = TransactionDB.objects.first()
+        self.assertEqual(tx.sender.address, self.address1)
+        self.assertEqual(tx.reciever.address, self.address2)
+        self.assertIsNotNone(tx.timestamp)
+        self.assertEqual(tx.data, 'tx sent!')
+        self.assertIsNone(tx.block)
+        self.assertEqual(tx.confirmation, 0)
+        self.assertEqual(tx.fees, 0)
