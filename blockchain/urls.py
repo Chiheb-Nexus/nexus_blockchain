@@ -18,7 +18,7 @@ urlpatterns = [
         views.TransactionInfo.as_view(),
         name='transaction_info'),
     re_path(
-        r'address-info/?(?P<address>0x[0-9a-fA-F]{,64})',
+        r'address-info/(?P<address>0x[0-9a-fA-F]{,64})',
         views.AddressInfo.as_view(),
         name='address_info'),
     path('search', views.Search.as_view(), name='search'),

@@ -45,6 +45,20 @@ $> python create_transaction.py
 
 - Then you have a list of a files try them all if you want :-)
 
+## Demo using Docker:
+
+Simply install docker and docker-compose then:
+
+```bash
+$> sudo su # Pass to root user
+$> cd docker_interaction
+$> ./run_docker.sh # In one terminal
+$> ./run_docker_bash.sh # In a second terminal
+# In the second terminal within docker
+root@[container_id]:/home/nexus_blockchain# cd interaction
+root@[container_id]:/home/nexus_blockchain# python mining.py
+```
+
 ## Screenshots
 
 ![block](./screenshots/block.png  "block")
