@@ -1,5 +1,7 @@
 # Nexus Blockchain
 
+[![CircleCI](https://circleci.com/gh/Chiheb-Nexus/nexus_blockchain/tree/master.svg?style=svg)](https://circleci.com/gh/Chiheb-Nexus/nexus_blockchain/tree/master)
+
 A tiny implementation of blockchain technology using a custom proof of work called "Proof of Nexus"
 
 ## Installation
