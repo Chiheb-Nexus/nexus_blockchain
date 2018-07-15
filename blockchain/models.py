@@ -10,8 +10,10 @@ from binascii import hexlify
 from os import urandom
 from functools import reduce
 from datetime import datetime
+from web3.auto import w3
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from blockchain.utils.block import BlockStructure
@@ -114,9 +116,29 @@ def add_merkle_root(sender, instance, *args, **kwargs):
         instance.save()
 
 
+def validate_address(addr):
+    if not w3.isAddress(addr):
+        raise ValidationError(
+            '{} is not a valid Ethereum address'.format(addr)
+        )
+
+
 class Address(models.Model):
-    address = models.CharField(max_length=250, verbose_name='Address')
-    balance = models.FloatField(verbose_name='Balance', default=0.0)
+    address = models.CharField(
+        max_length=250,
+        verbose_name='Address',
+        validators=[validate_address]
+    )
+    balance = models.FloatField(
+        verbose_name='Balance',
+        default=0.0,
+    )
+
+    def clean_address(self):
+        if not w3.isAddress(self.address):
+            raise ValidationError(
+                '{} is not a valid Ethereum address'.format(self.address)
+            )
 
     def __str__(self):
         return self.address
