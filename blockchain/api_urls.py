@@ -10,11 +10,6 @@ from blockchain import api_views
 
 router = routers.DefaultRouter()
 router.register(
-    r'genesis',
-    api_views.GenesisBlockAPI,
-    base_name='genesis'
-)
-router.register(
     r'get-raw-transaction',
     api_views.GetRawTransaction,
     base_name='raw_tx'
@@ -27,6 +22,14 @@ router.register(
 app_name = 'api'
 urlpatterns = [
     path('', include(router.urls)),
+    path(
+        'genesis',
+        api_views.GenesisBlockAPI.as_view({
+            'get': 'list',
+            'post': 'create'
+        }),
+        name='genesis'
+    ),
     re_path(
         r'block/(?P<height>[0-9a-fA-F]{,64})',
         api_views.GetBlockAPI.as_view({
