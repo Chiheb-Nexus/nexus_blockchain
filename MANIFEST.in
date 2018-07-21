@@ -1,0 +1,10 @@
+include LICENSE
+include README.rst
+include DOCKERFILE
+include docker-compose.yaml
+include requirements.txt
+include README.md
+recursive-include static/ *
+recursive-include blockchain/templates *
+recursive-include slides/ *
+recursive-include docker_interaction/ *

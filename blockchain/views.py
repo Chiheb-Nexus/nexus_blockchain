@@ -1,14 +1,13 @@
 #
 # Main views
 #
+"""Blockchain app views"""
 
-import re
 from web3.auto import w3
 from django.shortcuts import render, redirect
 from django.views import View
 from django.urls import reverse
 from django.http import Http404
-from blockchain.utils.block import BlockStructure
 from blockchain import models
 
 
@@ -18,6 +17,7 @@ class BlockInfo(View):
     template = 'blocks.html'
 
     def get(self, request, height, *args, **kwargs):
+        '''GET method returs URL'''
         return render(request, self.template, {
             'base_url': reverse('api:block', args=[height],)})
 
@@ -27,9 +27,10 @@ class TransactionInfo(View):
 
     template = 'transaction.html'
 
-    def get(self, request, tx, *args, **kwargs):
+    def get(self, request, tx_, *args, **kwargs):
+        '''GET method returs URL'''
         return render(request, self.template, {
-            'base_url': reverse('api:transaction', args=[tx],)})
+            'base_url': reverse('api:transaction', args=[tx_],)})
 
 
 class AddressInfo(View):
@@ -38,6 +39,7 @@ class AddressInfo(View):
     template = 'address.html'
 
     def get(self, request, address, *args, **kwargs):
+        '''GET method returs URL'''
         return render(request, self.template, {
             'base_url': reverse('api:address', args=[address.lower()],)})
 
@@ -48,9 +50,11 @@ class Search(View):
     error_404 = '404_view.html'
 
     def get(self, request, *args, **kwargs):
+        '''GET method returs 404'''
         return render(request, self.error_404)
 
     def post(self, request, *args, **kwargs):
+        '''POST method redirects to valid URL'''
         search = request.POST.get('search-input')
         if not search:
             raise Http404('Invalid search argument')
@@ -78,6 +82,7 @@ class Index(View):
     template = 'index.html'
 
     def get(self, request, *args, **kwargs):
+        '''GET method returs URL'''
         return render(request, self.template, {
             'base_url': reverse('api:last_blocks')})
 
@@ -88,5 +93,6 @@ class Mempool(View):
     template = 'mempool.html'
 
     def get(self, request, *args, **kwargs):
+        '''GET method returs URL'''
         return render(request, self.template, {
             'base_url': reverse('api:mempool')})
