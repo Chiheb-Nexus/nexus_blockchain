@@ -61,7 +61,7 @@ def _create_reward_tx(
 class GenesisBlockAPI(viewsets.ViewSet):
     '''Get Genesis block is exists else create new one'''
 
-    def list(self, *args, **kwargs):
+    def list(self, request, *args, **kwargs):
         '''Get method returns Genesis block data'''
 
         genesis = models.BlockStructureDB.objects.first()
@@ -156,14 +156,15 @@ def check_signature(data, debug=False):
         data.get('data')
     )
     msg_hash = defunct_hash_message(text=msg)
-    pub_key = w3.eth.account.recoverHash(
+    pub_key = w3.eth.account.recoverHash(  # pylint: disable=no-member
         msg_hash,
         signature=data.get('signature')
     )
     if debug:
-        print('POST: {0} | Check: {1}'.format(
-            data.get('from'),
-            pub_key),
+        print(
+            'POST: {0} | Check: {1}'.format(
+                data.get('from'),
+                pub_key),
             pub_key == data.get('from')
         )
 
@@ -179,8 +180,7 @@ def check_balance(data, sender):
     fees = data.get('fees')
     amount = data.get('amount')
     if not isinstance(
-            fees, (int, float)) or not isinstance(
-            amount, (int, float)):
+            fees, (int, float)) or not isinstance(amount, (int, float)):
         return False, 'Amount/fees must be integer or float'
     if not amount > 0 or not fees:
         return False, 'Amount/fees must be positive'
@@ -368,10 +368,9 @@ class LastFiveBlocks(viewsets.ViewSet):
 
         query = models.BlockStructureDB.objects.all().order_by(
             '-height')[:5].values(
-            'height',
-            'block_hash',
-            'timestamp'
-        )
+                'height',
+                'block_hash',
+                'timestamp')
         serialized = self.serializer_class(query, many=True)
         return Response({
             'status': status.HTTP_200_OK,
