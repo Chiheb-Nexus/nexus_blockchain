@@ -6,7 +6,7 @@
 
 ---
 
-## À propos du formateur:
+## À propos de formateur:
 
 <img src="img/me.png" height="350"></img>
 
@@ -124,7 +124,7 @@ Les blocs orphelins sont représentés en violet.
 - Une transaction avec un nombre élevé de confirmations et une transaction plus sure comparant à une transaction avec un faible nombre de confirmations.
 ---
 
-- Si un mineur A trouve une solution à un bloc en un instant `T` et un autre mineur B trouve la même solution en instant `T+x`. Dans ce cas, les mineurs qui ont reçu le hash du block de la part du mineur A vont essayer de résoudre le prochain bloc. S'il réussissent de trouver le prochain hash avant l'arrivée de l'information du hash trouvé par B alors la chaîne B sera rejettée et nommé `orphaned block` sinon si ceux qui ont miné en dessus de bloc du mineur B ont trouvé la solution du prochain block avant ceux qui ont miné en dessus du block trouvé par A, le block trouvé par A sera un `orphaned block`. Sinon, la compétition entre les blocs restera ouverte jusqu'à la défaite d'une chaîne contre une autre, ceci est appelé `orphaned chain` 
+- Si un mineur A trouve une solution à un bloc en un instant `T` et un autre mineur B trouve la même solution en instant `T+x`. Dans ce cas, les mineurs qui ont reçu le hash du block de la part du mineur A vont essayer de résoudre le prochain bloc. S'il réussissent de trouver le prochain hash avant l'arrivée de l'information du hash trouvé par B alors la chaîne B sera rejettée et nommé `orphaned block`. Sinon, si ceux qui ont miné en dessus de bloc du mineur B ont trouvé la solution du prochain block avant ceux qui ont miné en dessus du block trouvé par A, le block trouvé par A sera un `orphaned block`. Sinon, la compétition entre les blocs restera ouverte jusqu'à la défaite d'une chaîne contre une autre, ceci est appelé `orphaned chain` 
 [Pour plus d'informations: https://www.blockchain.com/fr/btc/orphaned-blocks](https://www.blockchain.com/fr/btc/orphaned-blocks)
 
 ---
@@ -143,6 +143,30 @@ Les blocs orphelins sont représentés en violet.
 
 ---
 
+### Colored coins: Une blockchain d'une autre blockchain
+
+Les `colored coins (jetons colorés)` est une manière de créer et de transférer des actifs `assets` dans le réseau de la blockchain (Bitcoin ou autres). Ces jetons colorés peuvent représenter des reserves, propriétés intelligentes, des titres et des valeurs, des marchandises, autres formes de monnaies etc ... 
+
+Le terme `Colored Coins` a été souvent défini par la représentation d'un `satoshi`, qui est la plus petite unité de Bitcoin, dans une autre forme que le Bitcoin lui même `protocol EPOBC`. Mais, actuellement, il existe d'autre manière de représentation de `Colored Coins` en utilisatn le langage de scripting `OP_RETURN`.
+
+---
+
+**Exemples d'utilisation de Colored Coins**
+
+- Émission des actions: Trading, vote, payer des dividendes 
+- Smart Proprety: Numéro de fabrication des voitures, etc..
+- Coupons: Point de fidélité, coupon de recharge, etc ...
+- Monnaie d'une communauté
+- Collectibles numérique: Acheter et vendre des tableaux de peinture ou des albums de musique etc ...
+- Accès et abonnement: Exemple: Dans les applications `RESTful` avec un Token d'accès et un abonnement d'une chaîne télévisée, etc ..
+- etc ...
+- Plus d'informations [bitcoin wiki](https://en.bitcoin.it/wiki/Colored_Coins).
+
+
+
+
+---
+
 ### Les problèmes de Bitcoin
 
 - Scalability:
@@ -156,3 +180,34 @@ Les blocs orphelins sont représentés en violet.
 
 ---
 
+# <center>Ethereum</center>
+### <center>Au délà de la Blockchain de Bitocoin</center>
+
+---
+
+### Introduction
+
+Ethereum est un protocole d'échanges décentralisés permettant la création par les utilisateurs de contrats intelligents grâce à un langage Turing-complete (Solidity, Viper, Serpent, ...). Ces contrats intelligents sont basés sur un protocole informatique permettant de vérifier ou de mettre en application un contrat mutuel, ils sont déployés et consultables publiquement dans la blockchain.
+
+---
+
+### Différences entre Ethereum et Bitcoin
+
+- Les transaction d'Ethereum se font en utilisation des comptes Ethereum avec un solde d'une manière nommée `State Transition` alors que les transactions de Bitcoin se basent sur les `inputs & unspent outputs` autrement nommé `UTXOs: Unspent Transaction Outputs`
+- L'état du solde des comptes Ethereum (Ethereum state balances) n'est pas stocké dans la blockchain mais d'une `merkle tree` séparée nommée `Patricia Tree`.
+- Les addresses Ethereum commencent par `0x` concatinée au résultat de l'algorithme de hashage `Keccak-256 (SHA3)` de clé publique `EDSCA`. Exemple: `0xb794F5eA0ba39494cE839613fffBA74279579268`. Or que en Bitcoin, utilise `base58` pour voir si l'adresse a été bien écrite ou non.
+
+---
+
+- Le temps entre les blocs d'Ethereum sont de l'ordre de 14-15 secondes alors qu'en Bitcoin c'est  ~10 minutes
+- La récompense de minage est statique sauf en cas de changement lors d'un `Hard Fork`
+- La preuve de travaille d'Ethereum utilise l'argorithme `Ethash`
+- Le taxe des transactions de la blockchain d'Ethereum nommé `GAS` est calculé en fonction de la complexité de calcul, bandwidth (bande passante requise entre les noeuds) et la taille de stockage des transactions. Alors qu'en Bitocoin, le taxe est calculé en `Satoshi par Byte` : `fee = (n_inputs * 148 + n_outputs * 34 + 10) * price_per_byte` (cette formule est valide seulement pour les `P2PKH public keys`. Voir la [liste des prefixes de Bitcoin](https://en.bitcoin.it/wiki/List_of_address_prefixes)
+
+---
+
+- `EVM`: Ethereum Virtual Machine qui est une pile de registre de taille de `256 bit` qui sert à exécuter un code (comme la JVM de Java ou la machine virtuelle de Python) dans chaque noeud du réseau de la blockchain d'Ethereum
+- Smart Contracts: Est un code écrit avec un langade de scripting qui sera compilé en `EVM bytecode` et sera par la suite exécuté par les noeuds de la blockchain d'Ethereum
+- DApps: Decentralized Applications sont les applications crées avec les Smart Contracts et le EVM d'Ethereum
+- Logiciels d'Entreprises: Ce sont des versions modifiées de la blockchain d'Ethereum optimisées pour les entreprises
+- Permissioned ledgers: Ce sont des versions modifiées de la blockchain d'Ethereum avec des permissions tel: `Quorom de JP Morgan`
