@@ -2,6 +2,7 @@
 # models
 #
 #
+"""Blockchain APP models"""
 
 import hashlib
 import struct
@@ -20,6 +21,7 @@ from blockchain.utils.block import BlockStructure
 
 
 class BlockStructureDB(models.Model):
+    '''BlockStructrueDB model'''
     height = models.AutoField(
         primary_key=True,
         verbose_name='Height',
@@ -71,9 +73,9 @@ def _merkle_root(iterable):
     if iterable.count() >= 2:
         merkle = reduce(lambda x, y: hashlib.sha256(
             (x if isinstance(x, str) else x.tx_hash + y.tx_hash).encode())
-            .hexdigest(),
-            iterable
-        )
+            .hexdigest(),  # pylint: disable=C0330
+            iterable  # pylint: disable=C0330
+        )   # pylint: disable=C0330
     elif iterable.count() == 1:
         sha256.update(iterable[0].tx_hash.encode())
         merkle = sha256.hexdigest()
@@ -88,7 +90,8 @@ def _merkle_root(iterable):
 
 
 @receiver(pre_save, sender=BlockStructureDB)
-def add_hash(sender, instance, *args, **kwargs):
+def add_hash(sender, instance, *args, **kwargs):  # pylint: disable=W0613
+    '''Add hash after saving bloc'''
     if not instance.block_hash:
         block = BlockStructure(
             index=instance.height,
@@ -100,7 +103,12 @@ def add_hash(sender, instance, *args, **kwargs):
 
 
 @receiver(post_save, sender=BlockStructureDB)
-def add_merkle_root(sender, instance, *args, **kwargs):
+def add_merkle_root(
+        sender,
+        instance,
+        *args,
+        **kwargs):  # pylint: disable=W0613
+    '''Add merkle root to a block'''
     block_tx = BlockStructureDB.objects.filter(pk=instance.pk).first()
     if not instance.merkle and block_tx:
         if block_tx:
@@ -117,6 +125,7 @@ def add_merkle_root(sender, instance, *args, **kwargs):
 
 
 def validate_address(addr):
+    '''Validate Ethereum address'''
     if not w3.isAddress(addr):
         raise ValidationError(
             '{} is not a valid Ethereum address'.format(addr)
@@ -124,6 +133,7 @@ def validate_address(addr):
 
 
 class Address(models.Model):
+    '''Address model'''
     address = models.CharField(
         max_length=250,
         verbose_name='Address',
@@ -135,6 +145,7 @@ class Address(models.Model):
     )
 
     def clean_address(self):
+        '''Validate an address before saving'''
         if not w3.isAddress(self.address):
             raise ValidationError(
                 '{} is not a valid Ethereum address'.format(self.address)
@@ -154,6 +165,7 @@ def _create_hash(seed_length=64):
 
 
 class TransactionDB(models.Model):
+    '''TransactionDB model'''
     tx_hash = models.CharField(
         max_length=64,
         verbose_name='Tx Hash',
@@ -217,6 +229,7 @@ class TransactionDB(models.Model):
 
 
 class ProofOfNexus(models.Model):
+    '''ProofOfNexus model'''
     nexus_hash = models.CharField(
         max_length=250,
         verbose_name='Nexus Hash',
@@ -258,6 +271,7 @@ class ProofOfNexus(models.Model):
 
 
 def get_random_range():
+    '''Get random ranges'''
     index, last = random.sample(range(1, 100), 2)
     if index > last:
         index, last = last, index
@@ -266,7 +280,13 @@ def get_random_range():
 
 
 @receiver(post_save, sender=ProofOfNexus)
-def get_work(sender, instance, created, *args, **kwargs):
+def get_work(
+        sender,
+        instance,
+        created,
+        *args,
+        **kwargs):   # pylint: disable=W0613
+    '''Get work from valid ranges'''
     if created and not instance.nexus_hash:
         index, last, range_str = get_random_range()
         nonce = random.randint(index, last)
