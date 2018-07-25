@@ -41,6 +41,7 @@ Formation blockchain
 
 - Workshop
 
+	- Création, compilation et interaction avec un Smart contract d'Ethereum
 	- Créez votre propre implémentation de la blockchain !
 	- Les pros & cons de vos implémentations
 
@@ -211,3 +212,21 @@ Ethereum est un protocole d'échanges décentralisés permettant la création pa
 - DApps: Decentralized Applications sont les applications crées avec les Smart Contracts et le EVM d'Ethereum
 - Logiciels d'Entreprises: Ce sont des versions modifiées de la blockchain d'Ethereum optimisées pour les entreprises
 - Permissioned ledgers: Ce sont des versions modifiées de la blockchain d'Ethereum avec des permissions tel: `Quorom de JP Morgan`
+
+---
+
+### Mining (Minage) avec la blockchain d'Ethereum
+
+Le mot minage prend sa source dans le contexte de l'anologie avec l'or où l'or, les métaux précieux, sont rares tout comme les jetons numériques (Cryptocurrencies) et le seul moyen d'augmenter le volume total des jetons est de l'exploiter.
+Ceci dit, le seul mode d'émission après le lancement est l'extraction (minage). Et par le biais de cette méthode, l'extraction minière, on sécurise le réseau en créant, en vérifiant, en publiant et en propageant des des blocs dans la chaîne des blocs.
+Toutefois, Ethereum va passer à un nouveau algorithme de minage qui est le `Proof Of Stake (POS: passation de POW -> POS)`
+
+Plus d'informations [Ethereum Wiki](https://github.com/ethereum/wiki/wiki/Mining)
+
+---
+
+# Création, compilation et déploiement d'un Smart Contract sur la blockchain d'Ethereum
+
+---
+
+
