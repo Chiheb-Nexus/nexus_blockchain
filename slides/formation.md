@@ -136,6 +136,32 @@ Les blocs orphelins sont représentés en violet.
 
 ---
 
+- Le principe du mining (POW, il y'a d'autres) consiste à trouver une solution à un problème mathémathique complexe. Pour le cas de Bitcoin la résolution du problème mathématique consiste à trouver le `nonce (number used once)` qui est un chiffre combiné avec les données du bloc et passé via une fonction de hashage `SHA256` produit une résulat, un hash, qui doit être inférieure à une certaine rangée. Le `nonce` est compris entre `0 et 2^32 => 0 < nonce < 4294967296`. Ceci dit, le `nonce` est un chiffre trouvé par hasard, grâce aux propriétés du hashage, et le hash résultant doit commencer par un certain nombre de zéros (18 zéros). Exemple de block valide de bitcoin `00000000000000000026581f3528c8845e6be3a459a86cebfa6f9df1354d5d58` trouvé avec le nonce `2026595385`
+
+---
+
+Dans cet exemple, on suppose que les données de notre bloc forment cette chaîne de caractères: `nexus`. Le but est de trouver le nombre de fois qu'il nous faut pour ajouter le charactère `-` aux données du bloc pour avoir un hash avec l'algorithme `SHA256` qui débute par zéro. Plus de détails: [bitcoin wiki](https://en.bitcoin.it/wiki/Block_hashing_algorithm)
+
+```python
+import hashlib
+
+def hash(a):
+   instance = hashlib.sha256()
+   instance.update(a.encode('utf8'))
+   return instance.hexdigest()
+   
+data = 'nexus{}'
+hash(data.format('-'))
+# '63fbaa1e24501db348503652b32812abbadbd5f0c17543a746877d82428db173'
+hash(data.format('-' * 2))
+# '4dcb86bc3864810b2632c25e31f286107a7f25b9b243d54fb6f0fe3fb4e097e4'
+...
+hash(data.format('-' * 15)) # nonce = 15
+# '04d3925a074d1dfcf5012af4797b70d2001e73897bd7094a3d6cc6fa5a2528a3'
+```
+
+---
+
 - Pour consommer les données enregistrées via la blockchain de Bitcoin:
 
 	- On peut télécharger l'intégralité de la blockchain en utilisant un client de Bitcoin ([Bitcoin core (C++)](https://github.com/bitcoin/bitcoin) ou [btcd (Go)](https://github.com/btcsuite) ou [Bcoin (NodeJS)](https://github.com/bcoin-org/bcoin), etc..)
