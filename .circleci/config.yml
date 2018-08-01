@@ -49,6 +49,7 @@ jobs:
           command: |
             . venv/bin/activate
             python manage.py test blockchain/tests/
+            python slides/btc_address/test.py
 
       - store_artifacts:
           path: test-reports
