@@ -253,6 +253,46 @@ Plus d'informations [Ethereum Wiki](https://github.com/ethereum/wiki/wiki/Mining
 
 # Création, compilation et déploiement d'un Smart Contract sur la blockchain d'Ethereum
 
+Voir la simulation du code en direct avec l'explication
+
 ---
+
+# ERC: Ethereum Request for Comment
+
+---
+
+# ERC20: Les jetons fongibles
+
+---
+
+- ERC20 a été proposé en 2015 de la part de `Fabian Vogelsteller` qui a définit les lois d'interaction avec les nouveaux jetons et cette nouvelle implémentation a vu son succès avec les `ICO` et les `Crowdfundings`.
+- ERC20 est un mot technique utilisé dans les Smart Contract de la blockchain d'Ethereum pour l'implémentation des jetons.
+- La majorité des jetons issus dans la blockchain d'Ethereum sont ERC20 compatible.
+
+---
+### Les fonctions et événements des jetons `ERC20`:
+
+- `totalSupply`: Stock total des jetons qui seront issus
+- `balanceOf(address _owner) constant returns (uint256 balance)`: La balance du compte `_owner`
+- `transfer(address _to, uint256 _value) returns (bool success)`: Transférer des jetons du Smart Contract vers l'adresse `_to` avec une valeur `_value`
+- `transferFrom(address _from, address _to, uint256 _value) returns (bool success)`: Transférer des jetons entre `_from` et `_to` avec une valeur de `_value`
+- `approve(address _spender, uint256 _value) returns (bool success)`: Approuver `_spender` de retirer la valeur `_value` en une ou plusieurs fois
+
+---
+
+- `alowance(address _owner, address _spender) constant returns (uint256 remaining)`: Retourner le montant que `_spender` a le permission de retirer de `_owner`.
+
+- `Transfer(address indexed _from, address indexed _to, uint256 _value)`: Est un événement utilisé pour garder une trace dans les logs de l'`EVM` d'Ethereum pour une future consultation.
+- `Approval(address indexed _owner, address indexed _spender, uint256 _value)`: Est un événement qui garde trace dans les logs d'`EVM` pour marqué d'un approuve d'un tel montant a été fait.
+
+---
+
+# ERC721: Les jetons non fongibles
+
+---
+
+- ERC721 a été proposé en 2018 de la part de plusieurs membres de la communauté d'Ethereum
+- Cette implémentation est une interface pour les jetons non fongibles, c'est à dire les jetons irremplaçable (exemple: Le tableau de la Mona Lisa)
+- Plus de détails sur ce [lien](http://erc721.org/)
 
 
