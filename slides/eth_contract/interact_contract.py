@@ -59,6 +59,7 @@ class InteractWithContract:
             print('-> Préparation de la transaction du déploiement ...')
         # Hacky ... mais fonctionnel :D
         tx_data = instance.constructor().__dict__.get('data_in_transaction')
+        # pylint: disable=E1101
         transaction = {
             # Celui qui va envoyer la transaction
             'from': self.pub,
@@ -67,22 +68,22 @@ class InteractWithContract:
             # GAS ... J'essaie de le rendre dynamique ...
             'gas': 2000000,
             # GAS price dynamique
-            'gasPrice': self.w3.eth.gasPrice,
+            'gasPrice': self.w3_instance.eth.gasPrice,
             # Le nonce de l'adresse
-            'nonce': self.w3.eth.getTransactionCount(self.pub),
+            'nonce': self.w3_instance.eth.getTransactionCount(self.pub),
             # Les données envoyées durant la transaction
             'data': tx_data
         }
         if verbose:
             print('-> Signer la transaction avec la clé privée...')
 
-        signed = self.w3.eth.account.signTransaction(transaction, self.priv)
+        signed = self.w3_instance.eth.account.signTransaction(transaction, self.priv)
 
         if verbose:
             msg = '-> Envoyer la transaction signée aux noeuds du provider ...'
             print(msg)
 
-        tx_hash = self.w3.eth.sendRawTransaction(signed.rawTransaction)
+        tx_hash = self.w3_instance.eth.sendRawTransaction(signed.rawTransaction)
 
         if verbose:
             msg = '-> Transaction envoyée avec succès avec ce hash: {0}'
@@ -103,7 +104,8 @@ class InteractWithContract:
         while True:
             # Avoir les informations de la transaction
             # Y compris l'adresse du Smart Contract
-            tx_receipt = self.w3.eth.getTransactionReceipt(tx_hash)
+            # pylint: disable=E1101
+            tx_receipt = self.w3_instance.eth.getTransactionReceipt(tx_hash)
             if tx_receipt:
                 if verbose:
                     print('-> Transaction confirmée!')
@@ -117,8 +119,9 @@ class InteractWithContract:
                         )
                         print(msg.format(contract_address, 'contract_address'))
 
-                    with open('contract_address', 'w') as f_data:
-                        f_data.write(str(contract_address))
+                    with open('contract_address.py', 'w+') as f_data:
+                        f_data.write('"""Contract address"""\n\n')
+                        f_data.write("CONTRACT_ADDRESS = '{}'\n".format(str(contract_address)))
 
                     if verbose:
                         print('-> Écriture terminée avec succès!')
