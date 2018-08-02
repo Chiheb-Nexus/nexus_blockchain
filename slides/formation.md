@@ -2,7 +2,7 @@
 
 # <center><b>Formation blockchain</b></center>
 <center>Animée par: <b>Ladjimi Chiheb Eddine</b></center>
-<center>Date: <b>14 - 15 Juillet 2018</b></center>
+<center>Date: <b>4 - 5 Août 2018</b></center>
 
 ---
 
@@ -33,16 +33,10 @@ Formation blockchain
 
 ---
 
-- Nexus Blockchain: Implémentation éducative de la blockchain
-
-	- Comment créer une blockchain from scratch ?
-	- Comment réecrir la blockchain pour répondre à nos besoins ?
-	- Et après ?
-
 - Workshop
 
 	- Création, compilation et interaction avec un Smart contract d'Ethereum
-	- Créez votre propre implémentation de la blockchain !
+	- Comment créer une blockchain from scratch ?
 	- Les pros & cons de vos implémentations
 
 ---
@@ -110,7 +104,13 @@ Les blocs orphelins sont représentés en violet.
 
 ---
 
-### Comment le Bitcoin fonctionne
+# Comment Bitcoin fonctionne
+
+---
+
+<img src="img/bitcoin_transaction.jpg"></img>
+
+---
 
 - Un bloc d'origine doit être crée (Genesis Block)
 - Les utilisateurs échangent entre eux des jetons (Bitcoin) sous formes de transactions dans la blockchain de Bitcoin via les noeuds de Miners (mineurs full nodes) ou bien via des détenteurs de l'historique synchronisé de la blockchain de Bitcoin (light nodes)
@@ -218,11 +218,19 @@ Ethereum est un protocole d'échanges décentralisés permettant la création pa
 
 ---
 
+<img src="img/ethereum_architecture.jpg"></img>
+
+---
+
+<img src="img/abstract_stack.png"></img>
+
+---
+
 ### Différences entre Ethereum et Bitcoin
 
 - Les transaction d'Ethereum se font en utilisation des comptes Ethereum avec un solde d'une manière nommée `State Transition` alors que les transactions de Bitcoin se basent sur les `inputs & unspent outputs` autrement nommé `UTXOs: Unspent Transaction Outputs`
 - L'état du solde des comptes Ethereum (Ethereum state balances) n'est pas stocké dans la blockchain mais d'une `merkle tree` séparée nommée `Patricia Tree`.
-- Les addresses Ethereum commencent par `0x` concatinée au résultat de l'algorithme de hashage `Keccak-256 (SHA3)` de clé publique `EDSCA`. Exemple: `0xb794F5eA0ba39494cE839613fffBA74279579268`. Or que en Bitcoin, utilise `base58` pour voir si l'adresse a été bien écrite ou non.
+- Les addresses Ethereum commencent par `0x` concatinée au résultat de l'algorithme de hashage `Keccak-256 (SHA3)` de clé publique `ECDSA`. Exemple: `0xb794F5eA0ba39494cE839613fffBA74279579268`. Or que en Bitcoin, utilise `base58` pour voir si l'adresse a été bien écrite ou non.
 
 ---
 
@@ -252,6 +260,12 @@ Plus d'informations [Ethereum Wiki](https://github.com/ethereum/wiki/wiki/Mining
 ---
 
 # Création, compilation et déploiement d'un Smart Contract sur la blockchain d'Ethereum
+
+---
+
+<img src="img/web3.jpg"></img>
+
+---
 
 Voir la simulation du code en direct avec l'explication
 
@@ -294,5 +308,13 @@ Voir la simulation du code en direct avec l'explication
 - ERC721 a été proposé en 2018 de la part de plusieurs membres de la communauté d'Ethereum
 - Cette implémentation est une interface pour les jetons non fongibles, c'est à dire les jetons irremplaçable (exemple: Le tableau de la Mona Lisa)
 - Plus de détails sur ce [lien](http://erc721.org/)
+
+---
+
+# Créez votre propre implémentation de la technologie de la blockchain
+
+---
+
+# Merci pour votre attention
 
 
