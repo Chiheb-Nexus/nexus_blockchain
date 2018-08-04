@@ -1,7 +1,4 @@
-#
-# Django Rest APIs
-#
-'''Explorer REST API'''
+"""Explorer REST API"""
 
 from datetime import datetime
 from django.db.models import F
