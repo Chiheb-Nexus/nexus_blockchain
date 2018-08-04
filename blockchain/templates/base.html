@@ -28,7 +28,7 @@
                     <ul></ul>
                     <ul></ul>
                   <ul class="navbar-nav mr-auto">
-                      <li><a class="navbar-brand" href="http://127.0.0.1:8000/mempool">Mempool</a></li>
+                      <li><a class="navbar-brand" href="{% url 'mempool_view' %}">Mempool</a></li>
                   </ul>
                   <form class="form-inline my-2 my-lg-2" action="{% url 'search' %}" method="post">
                       {% csrf_token %}
@@ -122,6 +122,15 @@
             
             {% endblock %}
             <style>
+                .Site {
+                    display: flex;
+                    min-height: 100vh;
+                    flex-direction: column;
+                }
+
+                .Site-content {
+                    flex: 1;
+                }
                .fluid-container.footer{
                     background: black;
                 }
