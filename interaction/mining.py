@@ -14,7 +14,7 @@ from utils.fmt_debug import fmt_debug
 
 class Mining:
     def __init__(self):
-        self.genesis_url = 'http://127.0.0.1:8000/api/genesis/'
+        self.genesis_url = 'http://127.0.0.1:8000/api/genesis'
         self.get_job_url = 'http://127.0.0.1:8000/api/proof-of-nexus/'
         self.headers = {'content-type': 'application/json'}
         self.miner_name = 'Nexus'
