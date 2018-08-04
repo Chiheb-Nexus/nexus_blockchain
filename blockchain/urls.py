@@ -14,7 +14,7 @@ urlpatterns = [
         views.BlockInfo.as_view(),
         name='block_info'),
     re_path(
-        r'transaction-info/(?P<tx>[0-9a-fA-F]{,64})',
+        r'transaction-info/(?P<tx_>[0-9a-fA-F]{,64})',
         views.TransactionInfo.as_view(),
         name='transaction_info'),
     re_path(
