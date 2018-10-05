@@ -30,7 +30,7 @@ with open('README.md', 'r') as f:
     LONG_DESCRIPTION = f.read()
 
 PACKAGES_REQUIRED = [
-    'Django==2.0.6',
+    'Django==2.1.2',
     'web3==4.3.0',
     'eth_account==0.2.3',
     'requests==2.19.1',
@@ -56,7 +56,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3',
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 2.0',
+        'Framework :: Django :: 2.1',
         'Licence :: GPLv3',
         'Operating System :: OS Independent'
         'Topic :: Internet :: WWW/HTTP',
