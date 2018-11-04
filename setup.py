@@ -9,7 +9,7 @@ import os
 import setuptools
 
 CURRENT_PYTHON = sys.version_info[:2]
-REQUIRED_PYTHON = (3, 5)
+REQUIRED_PYTHON = (3, 6)
 
 if CURRENT_PYTHON < REQUIRED_PYTHON:
     sys.stderr.write("""
@@ -31,7 +31,7 @@ with open('README.md', 'r') as f:
 
 PACKAGES_REQUIRED = [
     'Django==2.1.2',
-    'web3==4.3.0',
+    'web3==4.8.1',
     'eth_account==0.2.3',
     'requests>=2.20.0',
     'djangorestframework==3.8.2'
@@ -39,7 +39,7 @@ PACKAGES_REQUIRED = [
 
 setuptools.setup(
     name='Nexus Blockchain',
-    version='0.0.1',
+    version='0.0.2',
     author='Chiheb Nexus',
     author_email='chihebnexus@gmail.com',
     description=(
