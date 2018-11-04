@@ -21,9 +21,8 @@ Quick start
 
     path('blockchain/', include('nexus_blockchain.urls')),
 
-3. Run `python manage.py migrate` to create the polls models.
+3. Run `python manage.py migrate` to create models.
 
 4. Start the development server and visit http://127.0.0.1:8000/admin/
-   to create a poll (you'll need the Admin app enabled).
 
-5. Visit http://127.0.0.1:8000/blockchain/ to participate in the poll.
+5. Visit http://127.0.0.1:8000/blockchain/

@@ -6,13 +6,14 @@ A tiny implementation of blockchain technology using a custom proof of work call
 
 ## Installation
 
-- Install `virtualenv` for `Python3` then clone and install the project
+- Install `python3.6-dev` : `sudo apt install python3.6-dev`
+- Install `virtualenv` for `Python3.6` then clone and install the project
 
 
 ```bash
 $> sudo pip install virtualenv
 $> cd ~
-$> virtualenv --python=`which python3` nexus_blockchain
+$> virtualenv --python=`which python3.6` nexus_blockchain
 $> cd nexus_blockchain/bin
 $> source activate
 $> cd ..
