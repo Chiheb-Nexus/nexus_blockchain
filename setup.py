@@ -33,7 +33,7 @@ PACKAGES_REQUIRED = [
     'Django==2.1.2',
     'web3==4.3.0',
     'eth_account==0.2.3',
-    'requests==2.19.1',
+    'requests>=2.20.0',
     'djangorestframework==3.8.2'
 ]
 
