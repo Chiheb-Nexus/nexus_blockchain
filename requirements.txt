@@ -50,3 +50,4 @@ websocket-client==0.48.0
 websockets==4.0.1
 wrapt==1.10.11
 yarg==0.1.9
+ecdsa==0.13
