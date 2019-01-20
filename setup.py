@@ -30,7 +30,7 @@ with open('README.md', 'r') as f:
     LONG_DESCRIPTION = f.read()
 
 PACKAGES_REQUIRED = [
-    'Django==2.1.2',
+    'Django>=2.1.5',
     'web3==4.8.1',
     'eth_account==0.2.3',
     'requests>=2.20.0',
