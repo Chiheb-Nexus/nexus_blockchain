@@ -12,7 +12,7 @@ docker-compose==1.23.1
 docker-pycreds==0.3.0
 dockerpty==0.4.1
 docopt==0.6.2
-ecdsa==0.13
+ecdsa==0.13.3
 eth-abi==1.2.2
 eth-account==0.2.3
 eth-hash==0.2.0
