@@ -1,6 +1,6 @@
 # Nexus Blockchain
 
-[![CircleCI](https://circleci.com/gh/Chiheb-Nexus/nexus_blockchain/tree/master.svg?style=svg)](https://circleci.com/gh/Chiheb-Nexus/nexus_blockchain/tree/master)
+[![CircleCI](https://circleci.com/gh/Chiheb-Nexus/nexus_blockchain/tree/master.svg?style=svg)](https://circleci.com/gh/Chiheb-Nexus/nexus_blockchain/tree/master) ![(Nexus Blockchain) Django CI](https://github.com/Chiheb-Nexus/nexus_blockchain/workflows/(Nexus%20Blockchain)%20Django%20CI/badge.svg?branch=master)
 
 A tiny implementation of blockchain technology using a custom proof of work called "Proof of Nexus"
 
