@@ -13,7 +13,7 @@ cryptography==3.4.6
 cytoolz==0.11.0
 distro==1.5.0
 Django==2.1.5
-djangorestframework==3.8.2
+djangorestframework==3.11.2
 docker==4.4.4
 docker-compose==1.28.5
 docker-pycreds==0.3.0

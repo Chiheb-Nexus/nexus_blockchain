@@ -34,7 +34,7 @@ PACKAGES_REQUIRED = [
     'web3==4.8.1',
     'eth_account==0.2.3',
     'requests>=2.20.0',
-    'djangorestframework==3.9.1'
+    'djangorestframework==3.11.2'
 ]
 
 setuptools.setup(
