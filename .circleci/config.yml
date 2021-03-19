@@ -30,7 +30,8 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -y
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustp
+            sh rustp -y
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
