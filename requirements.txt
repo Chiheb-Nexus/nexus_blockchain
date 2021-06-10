@@ -12,7 +12,7 @@ chardet==3.0.4
 cryptography==3.4.6
 cytoolz==0.11.0
 distro==1.5.0
-Django==2.1.5
+Django==2.2.24
 djangorestframework==3.8.2
 docker==4.4.4
 docker-compose==1.28.5
