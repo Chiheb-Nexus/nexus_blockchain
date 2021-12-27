@@ -1,4 +1,4 @@
-Django
+Django==2.2.24
 djangorestframework==3.8.2
 docker-compose
 py-solc
