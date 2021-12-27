@@ -4,3 +4,4 @@ docker-compose
 py-solc
 python-dotenv
 web3
+six==1.11.0
