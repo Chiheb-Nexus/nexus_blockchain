@@ -67,7 +67,7 @@ toolz==0.9.0
 typing-extensions==3.7.4.3
 urllib3==1.24.2
 varint==1.0.2
-web3==5.17.0
+web3>=5.17.0
 websocket-client==0.48.0
 websockets>=9.1
 wrapt==1.10.11
