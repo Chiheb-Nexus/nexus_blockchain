@@ -1,5 +1,5 @@
 Django
-djangorestframework
+djangorestframework==3.8.2
 docker-compose
 py-solc
 python-dotenv
