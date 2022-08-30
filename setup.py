@@ -32,7 +32,7 @@ with open('README.md', 'r') as f:
 PACKAGES_REQUIRED = [
     'Django>=2.1.5',
     'web3==4.8.1',
-    'eth_account==0.2.3',
+    'eth_account==0.5.9',
     'requests>=2.20.0',
     'djangorestframework==3.9.1'
 ]
